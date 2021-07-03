@@ -1,0 +1,30 @@
+version: '2'
+services:
+  bookapp:
+    container_name: bookapp
+    image: yiisoftware/yii2-php:7.4-apache
+    volumes:
+      - ~/.composer-docker/cache:/root/.composer/cache:delegated
+      - ./:/app:delegated
+    ports:
+      - '8000:80'
+    depends_on:
+      - db
+
+  db:
+    container_name: bookapp-db
+    image: postgres
+    restart: always
+    ports:
+    - '6543:5432'
+    environment:
+      - POSTGRES_DB=yiitest
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+    volumes:
+      - ./schema.sql:/docker-entrypoint-initdb.d/1-schema.sql
+      - bookap-db-data:/var/lib/postgresql/data
+
+volumes:
+  bookap-db-data:
+    driver: local
