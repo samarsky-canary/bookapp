@@ -1,9 +1,8 @@
 DROP TABLE IF EXISTS users CASCADE;
 CREATE TABLE IF NOT EXISTS users (
     id SERIAL PRIMARY KEY,
-    login VARCHAR(30) NOT NULL UNIQUE,
-    password VARCHAR(50) NOT NULL,
-    role VARCHAR(30) NOT NULL
+    username VARCHAR(30) NOT NULL UNIQUE,
+    password VARCHAR(50) NOT NULL
 );
 
 DROP TABLE IF EXISTS passport CASCADE;
@@ -70,3 +69,20 @@ language plpgsql;
 
 CREATE TRIGGER book_return_trigger BEFORE UPDATE ON LendBook
     FOR EACH ROW EXECUTE PROCEDURE book_return();
+
+
+INSERT INTO users (username, password) values (
+    'Administrator', 'Administrator'
+);
+
+set datestyle to 'DMY';
+show datestyle ;
+INSERT INTO book (title, author, vendor_code, date_arrived, available)
+VALUES
+    ('Евгений Онегин', 'А.С. Пушкин', '34602313', '20-06-2021', true),
+    ('Война и мир', 'Л.Н. Толстой', '41412313', '18-06-2021', true),
+    ('Преступление и наказание', 'Ф.М. Достоевский', '98481313', '25-06-2021', true),
+    ('Том Сойер', 'М. Твен', '23130932', '10-06-2020', true),
+    ('Ведьмак. Башня ласточки', 'А. Сапковский', '54882313', '20-05-2021', true)
+;
+
