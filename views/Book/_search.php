@@ -15,7 +15,6 @@ use yii\widgets\ActiveForm;
         'method' => 'get',
     ]); ?>
 
-    <?= $form->field($model, 'id') ?>
 
     <?= $form->field($model, 'title') ?>
 
@@ -23,7 +22,10 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'vendor_code') ?>
 
-    <?= $form->field($model, 'date_arrived') ?>
+    <?= $form->field($model, 'date_arrived')->widget(\yii\jui\DatePicker::className(), [
+        'language' => 'ru',
+        'dateFormat' => 'yyyy-MM-dd',
+    ]) ?>
 
     <?php // echo $form->field($model, 'available')->checkbox() ?>
 

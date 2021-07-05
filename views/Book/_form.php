@@ -18,11 +18,10 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'vendor_code')->textInput(['maxlength' => true]) ?>
 
-    <?= $form->field($model, 'date_arrived')->textInput() ?>
-
-    <?= $form->field($model, 'available')->checkbox() ?>
-
-    <?= $form->field($model, 'condition')->textInput() ?>
+    <?= $form->field($model, 'date_arrived')->widget(\yii\jui\DatePicker::className(), [
+        'language' => 'ru',
+        'dateFormat' => 'yyyy-MM-dd',
+    ]) ?>
 
     <div class="form-group">
         <?= Html::submitButton('Save', ['class' => 'btn btn-success']) ?>

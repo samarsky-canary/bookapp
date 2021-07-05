@@ -17,8 +17,7 @@ class BookSearch extends Book
     public function rules()
     {
         return [
-            [['id', 'condition'], 'integer'],
-            [['title', 'author', 'vendor_code', 'date_arrived'], 'safe'],
+            [['title', 'author'], 'safe'],
             [['available'], 'boolean'],
         ];
     }
@@ -59,15 +58,11 @@ class BookSearch extends Book
 
         // grid filtering conditions
         $query->andFilterWhere([
-            'id' => $this->id,
-            'date_arrived' => $this->date_arrived,
             'available' => $this->available,
-            'condition' => $this->condition,
         ]);
 
         $query->andFilterWhere(['ilike', 'title', $this->title])
-            ->andFilterWhere(['ilike', 'author', $this->author])
-            ->andFilterWhere(['ilike', 'vendor_code', $this->vendor_code]);
+            ->andFilterWhere(['ilike', 'author', $this->author]);
 
         return $dataProvider;
     }

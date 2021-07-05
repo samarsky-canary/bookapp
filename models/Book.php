@@ -31,11 +31,13 @@ class Book extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['title', 'author', 'vendor_code', 'date_arrived', 'available'], 'required'],
-            [['date_arrived'], 'safe'],
+            [['title', 'author', 'vendor_code', 'date_arrived'], 'required'],
+            [['date_arrived'], 'safe', ],
+            [['date_arrived'], 'date', 'format' => 'php:Y-m-d'],
             [['available'], 'boolean'],
-            [['condition'], 'default', 'value' => null],
-            [['condition'], 'integer'],
+            [['available'], 'default', 'value' => true],
+            [['condition'], 'default', 'value' => 100],
+            [['condition'], 'integer', 'max' => 100, 'min' => 0],
             [['title', 'author'], 'string', 'max' => 50],
             [['vendor_code'], 'string', 'max' => 40],
         ];

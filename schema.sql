@@ -39,7 +39,7 @@ CREATE TABLE IF NOT EXISTS book (
     author VARCHAR(50) NOT NULL,
     vendor_code varchar(40) NOT NULL,
     date_arrived DATE NOT NULL,
-    available BOOLEAN NOT NULL,
+    available BOOLEAN NOT NULL DEFAULT true,
     condition INT NOT NULL CHECK ( condition BETWEEN 0 AND 100) DEFAULT 100
 );
 
