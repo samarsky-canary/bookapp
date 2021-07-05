@@ -27,9 +27,6 @@ use yii\widgets\ActiveForm;
         'dateFormat' => 'yyyy-MM-dd',
     ]) ?>
 
-    <?php // echo $form->field($model, 'available')->checkbox() ?>
-
-    <?php // echo $form->field($model, 'condition') ?>
 
     <div class="form-group">
         <?= Html::submitButton('Search', ['class' => 'btn btn-primary']) ?>

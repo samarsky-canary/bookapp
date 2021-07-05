@@ -34,7 +34,10 @@ $this->params['breadcrumbs'][] = $this->title;
             'available:boolean',
             'condition',
 
-            ['class' => 'yii\grid\ActionColumn'],
+            [
+                'class' => yii\grid\ActionColumn::class,
+
+            ]
         ],
     ]); ?>
 
