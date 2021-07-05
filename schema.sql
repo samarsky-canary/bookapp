@@ -7,7 +7,6 @@ CREATE TABLE IF NOT EXISTS users (
 
 DROP TABLE IF EXISTS passport CASCADE;
 CREATE TABLE IF NOT EXISTS passport (
-    id SERIAL PRIMARY KEY,
     firstname VARCHAR(50) NOT NULL,
     secondname VARCHAR(50) NOT NULL,
     thirdname VARCHAR (50),
@@ -19,17 +18,13 @@ CREATE TABLE IF NOT EXISTS passport (
 DROP TABLE IF EXISTS employee CASCADE;
 CREATE TABLE IF NOT EXISTS employee (
     id SERIAL PRIMARY KEY,
-    passport_id INT NOT NULL,
-    post VARCHAR(30) NOT NULL,
-    FOREIGN KEY (passport_id) references passport(id) ON DELETE CASCADE
-);
+    post VARCHAR(30) NOT NULL
+) INHERITS (passport);
 
 DROP TABLE IF EXISTS customer CASCADE;
 CREATE TABLE IF NOT EXISTS customer (
-    id SERIAL PRIMARY KEY,
-    passport_id INT NOT NULL ,
-    FOREIGN KEY (passport_id) REFERENCES passport(id) ON DELETE CASCADE
-);
+    id SERIAL PRIMARY KEY
+) INHERITS (passport);
 
 
 DROP TABLE IF EXISTS book;
