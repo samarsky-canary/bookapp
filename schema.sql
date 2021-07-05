@@ -15,6 +15,20 @@ CREATE TABLE IF NOT EXISTS passport (
     UNIQUE (passport_code, passport_series)
 );
 
+/*UNIQUE constrants not work with inheritance, above is workaround*/
+CREATE function unique_passport_check(_series_ varchar(4), _code_ varchar(6))
+RETURNS
+    boolean AS
+    $$ SELECT 0 IN (SELECT count(*) FROM passport WHERE passport_series = _series_ AND passport_code = _code_);
+    $$
+STABLE LANGUAGE SQL;
+
+ALTER TABLE passport
+    ADD CONSTRAINT unique_check
+        CHECK ( unique_passport_check(passport_series, passport_code) );
+/*END UNIQUE constrants not work with inheritance, above is workaround*/
+
+
 DROP TABLE IF EXISTS employee CASCADE;
 CREATE TABLE IF NOT EXISTS employee (
     id SERIAL PRIMARY KEY,
@@ -79,5 +93,19 @@ VALUES
     ('Преступление и наказание', 'Ф.М. Достоевский', '98481313', '25-06-2021', true),
     ('Том Сойер', 'М. Твен', '23130932', '10-06-2020', true),
     ('Ведьмак. Башня ласточки', 'А. Сапковский', '54882313', '20-05-2021', true)
+;
+
+
+INSERT INTO employee (firstname, secondname, thirdname, passport_series, passport_code, post)
+VALUES
+    ('Иванов', 'Иван' , 'Иванович', '1122', '123456', 'Библиотекарь'),
+    ('Иванова', 'Наталья' , 'Ивановна', '1123', '123456', 'Стажёр-библиотекарь')
+;
+
+
+INSERT INTO customer (firstname, secondname, thirdname, passport_series, passport_code)
+VALUES
+    ('Петров', 'Петр' , 'Петрович', '1023', '123456'),
+    ('Иванова', 'Наталья' , 'Ивановна', '1022', '123457')
 ;
 
