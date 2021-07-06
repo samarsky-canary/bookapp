@@ -2,7 +2,9 @@ DROP TABLE IF EXISTS users CASCADE;
 CREATE TABLE IF NOT EXISTS users (
     id SERIAL PRIMARY KEY,
     username VARCHAR(30) NOT NULL UNIQUE,
-    password VARCHAR(50) NOT NULL
+    password text NOT NULL,
+    auth_key text,
+    access_token text
 );
 
 DROP TABLE IF EXISTS passport CASCADE;
