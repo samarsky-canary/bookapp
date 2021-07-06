@@ -6,6 +6,7 @@ $db = require __DIR__ . '/db.php';
 $config = [
     'id' => 'basic',
     'name' => 'Library App',
+    'defaultRoute' => 'customer',
     'basePath' => dirname(__DIR__),
     'bootstrap' => ['log'],
     'aliases' => [
