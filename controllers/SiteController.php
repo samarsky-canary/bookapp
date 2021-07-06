@@ -56,25 +56,6 @@ class SiteController extends Controller
     }
 
     /**
-     * Redirect all unauthorized users
-     * @return Response
-     */
-    public function redirectGuests() {
-        if (Yii::$app->user->isGuest) {
-            return $this->redirect(['login']);
-        }
-    }
-    /**
-     * Displays homepage.
-     *
-     * @return string
-     */
-    public function actionIndex()
-    {
-        return $this->render('index');
-    }
-
-    /**
      * Login action.
      *
      * @return Response|string
