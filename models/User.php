@@ -3,14 +3,14 @@
 namespace app\models;
 
 
+use yii\web\IdentityInterface;
+
 /**
  * This is the model class for table "book".
  *
  * @property int $id
  * @property string $username
  * @property string $password
- * @property string $auth_key
- * @property string $access_token
  */
 class User extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface
 {
@@ -34,10 +34,7 @@ class User extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface
     /**
      * {@inheritdoc}
      */
-    public static function findIdentityByAccessToken($token, $type = null)
-    {
-       return static::findOne(['access_token' => $token]);
-    }
+
 
     /**
      * Finds user by username
@@ -59,22 +56,6 @@ class User extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface
     }
 
     /**
-     * {@inheritdoc}
-     */
-    public function getAuthKey()
-    {
-        return $this->auth_key;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function validateAuthKey($authKey)
-    {
-        return $this->getAuthKey() === $authKey;
-    }
-
-    /**
      * Validates password
      *
      * @param string $password password to validate
@@ -82,18 +63,21 @@ class User extends \yii\db\ActiveRecord implements \yii\web\IdentityInterface
      */
     public function validatePassword($password)
     {
-        return $this->password === $password;
+        return \Yii::$app->security->validatePassword($password, $this->password);
     }
 
-    /**
-     * @throws \yii\base\Exception
-     */
-    public function beforeSave($insert)
+    public static function findIdentityByAccessToken($token, $type = null)
     {
-        if (parent::beforeSave($insert)) {
-            $this->auth_key = \Yii::$app->security->generateRandomString();
-            return true;
-        }
-        return false;
+        // TODO: Implement findIdentityByAccessToken() method.
+    }
+
+    public function validateAuthKey($authKey)
+    {
+        // TODO: Implement validateAuthKey() method.
+    }
+
+    public function getAuthKey()
+    {
+        // TODO: Implement getAuthKey() method.
     }
 }
