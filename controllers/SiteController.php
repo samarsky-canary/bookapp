@@ -3,6 +3,8 @@
 namespace app\controllers;
 
 use app\models\Book;
+use app\models\Signup;
+use app\models\User;
 use Yii;
 use yii\filters\AccessControl;
 use yii\web\Controller;
@@ -55,6 +57,25 @@ class SiteController extends Controller
         ];
     }
 
+
+
+    public function actionSignup() {
+        if (!Yii::$app->user->isGuest) {
+            return $this->goHome();
+        }
+        $model = new Signup();
+        if($model->load(Yii::$app->request->post()) && $model->validate()){
+            $user = new User();
+            $user->username = $model->username;
+            $user->password = Yii::$app->security->generatePasswordHash($model->password);
+            if ($user->save()) {
+                Yii::$app->user->login($user);
+                $this->goHome();
+            }
+        }
+
+        return $this->render('signup', compact('model'));
+    }
     /**
      * Login action.
      *
