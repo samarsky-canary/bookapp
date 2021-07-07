@@ -33,9 +33,22 @@ $this->params['breadcrumbs'][] = $this->title;
             'passport_code',
             //'id',
 
-            ['class' => 'yii\grid\ActionColumn'],
+            ['class' => yii\grid\ActionColumn::class,
+                'template' => '{add}{return}{view}{delete}{update}',
+                'buttons' => [
+                    'add' => function ($url, $model) {
+                        return Html::a('<span class="glyphicon glyphicon-plus"></span>',['lendbook/create', 'id'=>$model->id], [
+                            'title' => Yii::t('app', 'Add Book'),
+                        ]);
+                    },
+                    'return' => function ($url, $model) {
+                        return Html::a('<span class="glyphicon glyphicon-minus"></span>', 'customer/delete?id='.$model->id, [
+                            'title' => Yii::t('app', 'Return Book'),
+                        ]);
+                    }
+                ],
+            ],
         ],
     ]); ?>
-
 
 </div>
