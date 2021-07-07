@@ -31,18 +31,28 @@ $this->params['breadcrumbs'][] = $this->title;
             'thirdname',
             'passport_series',
             'passport_code',
-            //'id',
 
+            ['class' => \yii\grid\DataColumn::class,
+                'label' => 'Has Books',
+                'format' => 'boolean',
+                'value' => function($model) {
+                    return \app\models\Customer::find()
+                        ->select('id')
+                        ->from('lendbook')
+                        ->where(['customer_id' => $model->id])
+                        ->limit(1)->one() !== null;
+                },
+            ],
             ['class' => yii\grid\ActionColumn::class,
-                'template' => '{add}{return}{view}{delete}{update}',
+                'template' => '{give}{view}{delete}{update}',
                 'buttons' => [
-                    'add' => function ($url, $model) {
-                        return Html::a('<span class="glyphicon glyphicon-plus"></span>',['lendbook/create', 'id'=>$model->id], [
+                    'give' => function ($url, $model) {
+                        return Html::a('<span class="glyphicon glyphicon-upload"></span>',['lendbook/create', 'id'=>$model->id], [
                             'title' => Yii::t('app', 'Add Book'),
                         ]);
                     },
                     'return' => function ($url, $model) {
-                        return Html::a('<span class="glyphicon glyphicon-minus"></span>', 'customer/delete?id='.$model->id, [
+                        return Html::a('<span class="glyphicon glyphicon-download"></span>', 'customer/delete?id='.$model->id, [
                             'title' => Yii::t('app', 'Return Book'),
                         ]);
                     }

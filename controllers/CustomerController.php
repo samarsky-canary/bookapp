@@ -7,6 +7,7 @@ use app\models\Employee;
 use Yii;
 use app\models\Customer;
 use app\models\CustomerSearch;
+use yii\data\SqlDataProvider;
 use yii\db\Exception;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
@@ -72,8 +73,15 @@ class CustomerController extends Controller
      */
     public function actionView($id)
     {
+        $model = $this->findModel($id);
+        $books = new Book();
+        $dataProvider = new SqlDataProvider([
+            'sql' => "SELECT * FROM lendbook WHERE customer_id = $model->id",
+            'key' => 'book_id'
+        ]);
         return $this->render('view', [
-            'model' => $this->findModel($id),
+            'model' => $model,
+            'dataProvider' => $dataProvider
         ]);
     }
 
@@ -95,23 +103,6 @@ class CustomerController extends Controller
         ]);
     }
 
-    /**
-     * @throws NotFoundHttpException
-     */
-    public function actionGiveBook($id) {
-        $customer = Customer::findOne($id);
-        $books = Book::findAvailableBooks();
-        $employees = Employee::find()->all();
-        if (!isset($customer)) {
-            throw new NotFoundHttpException('Customer not found');
-        }
-        return $this->render('give-book', [
-            'model' => $customer,
-            'books' => $books,
-            'employees' => $employees,
-        ]);
-
-    }
 
     /**
      * Updates an existing Customer model.

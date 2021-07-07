@@ -19,6 +19,7 @@ class CustomerSearch extends Customer
         return [
             [['firstname', 'secondname', 'thirdname', 'passport_series', 'passport_code'], 'safe'],
             [['id'], 'integer'],
+            [['has_books'], 'boolean']
         ];
     }
 

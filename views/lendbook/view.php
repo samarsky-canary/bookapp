@@ -5,6 +5,7 @@ use yii\widgets\DetailView;
 
 /* @var $this yii\web\View */
 /* @var $model app\models\Lendbook */
+/* @var $books app\models\Lendbook */
 
 $this->title = $model->id;
 $this->params['breadcrumbs'][] = ['label' => 'Lendbooks', 'url' => ['index']];

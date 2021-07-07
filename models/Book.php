@@ -3,6 +3,7 @@
 namespace app\models;
 
 use Yii;
+use yii\web\NotFoundHttpException;
 
 /**
  * This is the model class for table "book".
@@ -57,6 +58,14 @@ class Book extends \yii\db\ActiveRecord
             $book->available = !$reserve;
         }
         return ($book->save());
+    }
+
+    public static function getBook($id) {
+        $book = Book::findOne(['id' => $id]);
+        if (isset($book)) {
+            return $book;
+        }
+        throw new NotFoundHttpException('Book not found');
     }
 
     public function attributeLabels()

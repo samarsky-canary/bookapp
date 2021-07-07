@@ -39,6 +39,10 @@ class Lendbook extends \yii\db\ActiveRecord
         ];
     }
 
+    public function getCustomer() {
+        return $this->hasOne(Customer::class,['id' => 'customer_id']);
+    }
+
     /**
      * {@inheritdoc}
      */

@@ -16,6 +16,7 @@ use Yii;
  */
 class Customer extends \yii\db\ActiveRecord
 {
+    public $has_books = false;
     /**
      * {@inheritdoc}
      */
@@ -36,7 +37,18 @@ class Customer extends \yii\db\ActiveRecord
             [['passport_code'], 'string', 'max' => 6],
             [['passport_code'],  'match', 'pattern'=>'/^[0-9]+$/u', 'message' => 'Only numbers allowed'],
             [['passport_series'],  'match', 'pattern'=>'/^[0-9]+$/u', 'message' => 'Only numbers allowed'],
+            [['has_books'], 'boolean']
         ];
+    }
+
+    public static function getBooks($id) {
+        return Customer::find()->select('id')
+            ->from('lendbook')
+            ->where(['customer_id' =>$id])->all();
+    }
+
+    public static  function  isLentBooks($id) {
+        return Customer::getBooks($id) !== null;
     }
 
     /**
@@ -51,6 +63,7 @@ class Customer extends \yii\db\ActiveRecord
             'passport_series' => 'Passport Series',
             'passport_code' => 'Passport Code',
             'id' => 'ID',
+            'has_books' => 'Has books'
         ];
     }
 }

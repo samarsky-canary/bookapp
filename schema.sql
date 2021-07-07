@@ -53,11 +53,12 @@ CREATE TABLE IF NOT EXISTS book (
 );
 
 
-CREATE TABLE IF NOT EXISTS LendBook (
+DROP TABLE IF EXISTS lendbook;
+CREATE TABLE IF NOT EXISTS lendbook (
     id SERIAL PRIMARY KEY,
-    book_id INT NOT NULL,
-    customer_id INT NOT NULL,
-    employee_id INT NOT NULL,
+    book_id INT NOT NULL REFERENCES book (id),
+    customer_id INT NOT NULL REFERENCES customer (id),
+    employee_id INT NOT NULL references employee (id),
     date_lending DATE NOT NULL,
     date_expire_at DATE NOT NULL,
     date_actual_return DATE,

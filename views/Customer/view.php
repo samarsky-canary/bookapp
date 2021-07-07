@@ -1,10 +1,13 @@
 <?php
 
+use yii\grid\GridView;
 use yii\helpers\Html;
 use yii\widgets\DetailView;
 
 /* @var $this yii\web\View */
 /* @var $model app\models\Customer */
+/* @var $dataProvider yii\data\SqlDataProvider */
+
 
 $this->title = $model->id;
 $this->params['breadcrumbs'][] = ['label' => 'Customers', 'url' => ['index']];
@@ -37,5 +40,25 @@ $this->params['breadcrumbs'][] = $this->title;
             'id',
         ],
     ]) ?>
+
+    <?= GridView::widget([
+        'dataProvider' => $dataProvider,
+        'columns' => [
+            ['class' => 'yii\grid\SerialColumn'],
+
+            ['class' => yii\grid\DataColumn::class,
+                'label' => 'Book',
+                'value' => function($model, $key) {
+                    $book = \app\models\Book::getBook($key);
+                    return $book->title.':. '.$book->author;
+                }
+                ],
+            'date_lending',
+            'date_expire_at',
+            'date_actual_return',
+            'condition_arrived',
+        ],
+    ]); ?>
+
 
 </div>
