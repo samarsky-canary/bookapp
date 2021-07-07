@@ -22,21 +22,13 @@ CSS;
 
     ]); ?>
 
-    <?= $form->field($model, 'book_id')->textInput() ?>
-
-    <?= $form->field($model, 'customer_id')->textInput() ?>
-
-    <?= $form->field($model, 'employee_id')->textInput() ?>
-
-    <?= $form->field($model, 'date_lending')->widget(\yii\jui\DatePicker::class, [
+    <?= $form->field($model, 'date_actual_return')->widget(\yii\jui\DatePicker::class, [
         'language' => 'en',
         'dateFormat' => 'yyyy-MM-dd',
     ]) ?>
 
-    <?= $form->field($model, 'date_expire_at')->widget(\yii\jui\DatePicker::class, [
-        'language' => 'en',
-        'dateFormat' => 'yyyy-MM-dd',
-    ]) ?>
+    <?= $form->field($model, 'condition_arrived')->textInput() ?>
+
 
     <div class="form-group">
         <?= Html::submitButton('Save', ['class' => 'btn btn-success']) ?>

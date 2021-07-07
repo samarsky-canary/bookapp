@@ -60,6 +60,13 @@ class Book extends \yii\db\ActiveRecord
         return ($book->save());
     }
 
+    public static function SetCondition($id, $condition) {
+        $book = Book::findOne(['id' => $id]);
+        if (isset($book)) {
+            $book->condition = $condition;
+        }
+        return ($book->save());
+    }
     public static function getBook($id) {
         $book = Book::findOne(['id' => $id]);
         if (isset($book)) {

@@ -5,6 +5,7 @@ namespace app\controllers;
 use app\models\Book;
 use app\models\Customer;
 use app\models\Employee;
+use app\models\LendbookSearch;
 use Yii;
 use app\models\Lendbook;
 use yii\data\ActiveDataProvider;
@@ -39,9 +40,8 @@ class LendbookController extends Controller
      */
     public function actionIndex()
     {
-        $dataProvider = new ActiveDataProvider([
-            'query' => Lendbook::find(),
-        ]);
+        $searchModel = new LendbookSearch();
+        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
         return $this->render('index', [
             'dataProvider' => $dataProvider,
@@ -99,8 +99,12 @@ class LendbookController extends Controller
     {
         $model = $this->findModel($id);
 
+
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
+            $free = isset($model->date_actual_return);
+            Book::ReserveBook($model->book_id, !$free);
+            Book::SetCondition($model->book_id, $model->condition_arrived);
+            return $this->redirect(['index']);
         }
 
         return $this->render('update', [

@@ -61,4 +61,7 @@ $this->params['breadcrumbs'][] = $this->title;
         ],
     ]); ?>
 
+    <?= Html::a('Return Book',  'index.php?r=lendbook%2Findex', ['class' => 'btn btn-primary']) ?>
+
+
 </div>

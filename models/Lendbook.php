@@ -34,8 +34,10 @@ class Lendbook extends \yii\db\ActiveRecord
         return [
             [['book_id', 'customer_id', 'employee_id', 'date_lending', 'date_expire_at'], 'required'],
             [['book_id', 'customer_id', 'employee_id', 'condition_arrived'], 'default', 'value' => null],
-            [['book_id', 'customer_id', 'employee_id', 'condition_arrived'], 'integer'],
+            [['book_id', 'customer_id', 'employee_id'], 'integer'],
             [['date_lending', 'date_expire_at', 'date_actual_return'], 'safe'],
+            [['condition_arrived'], 'integer', 'max' => 100, 'min' => 0],
+
         ];
     }
 
