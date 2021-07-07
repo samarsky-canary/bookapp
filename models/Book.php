@@ -46,6 +46,19 @@ class Book extends \yii\db\ActiveRecord
     /**
      * {@inheritdoc}
      */
+
+    public static function findAvailableBooks($available = true) {
+        return Book::findAll(['available' => $available]);
+    }
+
+    public static function ReserveBook($id, $reserve = true) {
+        $book = Book::findOne(['id' => $id]);
+        if (isset($book)) {
+            $book->available = !$reserve;
+        }
+        return ($book->save());
+    }
+
     public function attributeLabels()
     {
         return [

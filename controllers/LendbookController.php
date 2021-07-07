@@ -3,19 +3,20 @@
 namespace app\controllers;
 
 use app\models\Book;
+use app\models\Customer;
 use app\models\Employee;
 use Yii;
-use app\models\Customer;
-use app\models\CustomerSearch;
-use yii\db\Exception;
+use app\models\Lendbook;
+use yii\data\ActiveDataProvider;
+use yii\web\BadRequestHttpException;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 
 /**
- * CustomerController implements the CRUD actions for Customer model.
+ * LendbookController implements the CRUD actions for Lendbook model.
  */
-class CustomerController extends Controller
+class LendbookController extends Controller
 {
     /**
      * {@inheritdoc}
@@ -29,43 +30,26 @@ class CustomerController extends Controller
                     'delete' => ['POST'],
                 ],
             ],
-            'access' => [
-                'class' => \yii\filters\AccessControl::className(),
-                'only' => ['create', 'update','index', 'view'],
-                'rules' => [
-                    // deny all POST requests
-                    [
-                        'allow' => false,
-                        'verbs' => ['POST']
-                    ],
-                    // allow authenticated users
-                    [
-                        'allow' => true,
-                        'roles' => ['@'],
-                    ],
-                    // everything else is denied
-                ],
-            ],
         ];
     }
 
     /**
-     * Lists all Customer models.
+     * Lists all Lendbook models.
      * @return mixed
      */
     public function actionIndex()
     {
-        $searchModel = new CustomerSearch();
-        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+        $dataProvider = new ActiveDataProvider([
+            'query' => Lendbook::find(),
+        ]);
 
         return $this->render('index', [
-            'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
         ]);
     }
 
     /**
-     * Displays a single Customer model.
+     * Displays a single Lendbook model.
      * @param integer $id
      * @return mixed
      * @throws NotFoundHttpException if the model cannot be found
@@ -78,43 +62,34 @@ class CustomerController extends Controller
     }
 
     /**
-     * Creates a new Customer model.
+     * Creates a new Lendbook model.
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return mixed
      */
-    public function actionCreate()
+    public function actionCreate($id)
     {
-        $model = new Customer();
+        $model = new Lendbook();
+        $customer = Customer::findOne($id);
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
+        if ($model->load(Yii::$app->request->post())) {
+            $model->customer_id = $customer->id;
+            if ($model->save()) {
+                if (Book::ReserveBook($model->book_id)) {
+                    return $this->goHome();
+                } else {
+                    throw new BadRequestHttpException("Error in changing book status");
+                }
+            }
         }
 
         return $this->render('create', [
             'model' => $model,
+            'customer' => $customer,
         ]);
     }
 
     /**
-     * @throws NotFoundHttpException
-     */
-    public function actionGiveBook($id) {
-        $customer = Customer::findOne($id);
-        $books = Book::findAvailableBooks();
-        $employees = Employee::find()->all();
-        if (!isset($customer)) {
-            throw new NotFoundHttpException('Customer not found');
-        }
-        return $this->render('give-book', [
-            'model' => $customer,
-            'books' => $books,
-            'employees' => $employees,
-        ]);
-
-    }
-
-    /**
-     * Updates an existing Customer model.
+     * Updates an existing Lendbook model.
      * If update is successful, the browser will be redirected to the 'view' page.
      * @param integer $id
      * @return mixed
@@ -134,7 +109,7 @@ class CustomerController extends Controller
     }
 
     /**
-     * Deletes an existing Customer model.
+     * Deletes an existing Lendbook model.
      * If deletion is successful, the browser will be redirected to the 'index' page.
      * @param integer $id
      * @return mixed
@@ -148,15 +123,15 @@ class CustomerController extends Controller
     }
 
     /**
-     * Finds the Customer model based on its primary key value.
+     * Finds the Lendbook model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
      * @param integer $id
-     * @return Customer the loaded model
+     * @return Lendbook the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
     protected function findModel($id)
     {
-        if (($model = Customer::findOne($id)) !== null) {
+        if (($model = Lendbook::findOne($id)) !== null) {
             return $model;
         }
 
